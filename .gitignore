@@ -1,0 +1,25 @@
+# Node
+node_modules/
+dist/
+build/
+coverage/
+
+# Env
+.env
+.env.*
+
+# Logs
+*.log
+logs/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Vite
+frontend/.vite/
+
+# Docker volumes (если будут локальные)
+postgres_data/
