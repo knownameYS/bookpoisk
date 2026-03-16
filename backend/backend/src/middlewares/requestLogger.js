@@ -1,17 +1,19 @@
-import pino from "pino";
-import { env } from "../config/env.js";
+import { logger } from "../lib/logger.js";
 
-export const logger = pino({
-  level: env.LOG_LEVEL,
-  transport:
-    env.NODE_ENV === "development"
-      ? {
-          target: "pino-pretty",
-          options: {
-            colorize: true,
-            translateTime: "SYS:standard",
-            ignore: "pid,hostname",
-          },
-        }
-      : undefined,
-});
+export function requestLogger(req, res, next) {
+  const start = Date.now();
+
+  res.on("finish", () => {
+    logger.info(
+      {
+        method: req.method,
+        path: req.originalUrl,
+        statusCode: res.statusCode,
+        durationMs: Date.now() - start,
+      },
+      "HTTP request",
+    );
+  });
+
+  next();
+}
